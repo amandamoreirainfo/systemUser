@@ -10,9 +10,12 @@ def index():
     #usuarios = Usuario.query.all()
     return render_template('index.html')
 
+@app.route("/register")
+def createUser():
+    return render_template('login.html')
 
-@app.route('/adicionar', methods=['POST'])
-def adicionarUsuario():
+@app.route('/added', methods=['POST'])
+def addedUser():
     nome = request.form['nome']
     email = request.form['email']
     usuario = Usuario(nome=nome, email=email)
