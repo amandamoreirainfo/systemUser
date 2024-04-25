@@ -1,9 +1,6 @@
-from app import app, db
 from flask import render_template, request, redirect, url_for
+from app import app, db
 from app.models import Usuario
-
-with app.app_context():
-    print(db.create_all())
 
 @app.route('/')
 def index():
@@ -12,7 +9,7 @@ def index():
 
 @app.route("/register")
 def createUser():
-    return render_template('login.html')
+    return render_template('register.html')
 
 @app.route('/added', methods=['POST'])
 def addedUser():
@@ -24,14 +21,16 @@ def addedUser():
     return redirect(url_for('index'))
 
 
-#criar tablea no banco de dados
-
-#@app.cli.command()
-#def createTables():
-  #  db.create_all()
- #   print("Tabela criada com sucesso. ")
-
-#if __name__ == '__main__':
-   # app.run()
+@app.route('/edit/<int:id>', methods=['GET','POST'])
+def edit(id):
+    usuario = Usuario.query.get_or_404(id)
+    if request.method == 'POST':
+        nome = request.form['nome']
+        email = request.form['email']
+        usuario.nome = nome
+        usuario.email = email
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template("edit.html", usuario=usuario)
 
 

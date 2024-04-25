@@ -10,8 +10,3 @@ db = SQLAlchemy(app)
  
 
 from app import routes
-from app.models import Usuario
-
-
-with app.app_context():
-    print(db.create_all())
