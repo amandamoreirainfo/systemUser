@@ -4,8 +4,8 @@ from app.models import Usuario
 
 @app.route('/')
 def index():
-    #usuarios = Usuario.query.all()
-    return render_template('index.html')
+    usuarios = Usuario.query.all()
+    return render_template('index.html', usuarios=usuarios)
 
 @app.route("/register")
 def createUser():
@@ -32,5 +32,16 @@ def edit(id):
         db.session.commit()
         return redirect(url_for('index'))
     return render_template("edit.html", usuario=usuario)
+
+@app.route('/delete/<int:id>', methods=['GET','POST'])
+def delete(id):
+    usuario = Usuario.query.get_or_404(id)
+    db.session.delete(usuario)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+
+
 
 
