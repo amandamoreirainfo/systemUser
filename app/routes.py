@@ -15,7 +15,8 @@ def createUser():
 def addedUser():
     nome = request.form['nome']
     email = request.form['email']
-    usuario = Usuario(nome=nome, email=email)
+    senha = request.form['senha']
+    usuario = Usuario(nome=nome, email=email, senha=senha)
     db.session.add(usuario)
     db.session.commit()
     return redirect(url_for('index'))
@@ -27,8 +28,10 @@ def edit(id):
     if request.method == 'POST':
         nome = request.form['nome']
         email = request.form['email']
+        senha = request.form['senha']
         usuario.nome = nome
         usuario.email = email
+        usuario.senha = senha
         db.session.commit()
         return redirect(url_for('index'))
     return render_template("edit.html", usuario=usuario)
@@ -39,6 +42,29 @@ def delete(id):
     db.session.delete(usuario)
     db.session.commit()
     return redirect(url_for('index'))
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        senha = request.form.get('senha')
+        if email and senha:
+            usuario = Usuario.query.filter_by(email=email, senha=senha).first()
+            if usuario:
+                return redirect(url_for('index'))
+            else:
+                return "Email ou senha incorretos."
+    return render_template("login.html")
+
+
+
+
+
+
+
+
+
+
 
 
 
