@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from app import app, db
 from app.models import Usuario
 
@@ -19,7 +19,7 @@ def addedUser():
     usuario = Usuario(nome=nome, email=email, senha=senha)
     db.session.add(usuario)
     db.session.commit()
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 @app.route('/edit/<int:id>', methods=['GET','POST'])
@@ -55,6 +55,22 @@ def login():
             else:
                 return "Email ou senha incorretos."
     return render_template("login.html")
+
+
+@app.route('/searchUser', methods=['GET', 'POST'])
+def search():
+    nome = request.form.get('nome')
+    usuarios = Usuario.query.filter(Usuario.nome == nome).all()
+    if usuarios: 
+        return render_template('index.html', usuarios=usuarios)
+    else:
+        return render_template("index.html", mensagem="O Usuário não foi encontrado!!")
+
+
+
+
+
+
 
 
 

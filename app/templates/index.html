@@ -6,7 +6,18 @@
     <title>Menu</title>
 </head>
 <body>
+
+    <form action="{{ url_for('search') }}" method="POST">
+        <input type="text" name="nome" placeholder="Digite o nome do usuário">
+        <button type="submit">Pesquisar</button>
+    </form>
     
+    <br/>
+
+    {{ mensagem }}
+    
+    <br/>
+
     <table border="1">
         <tr>
             <th>Nome do Usuário</th>
